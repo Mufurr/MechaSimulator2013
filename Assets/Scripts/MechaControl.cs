@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class MechaControl : MonoBehaviour 
@@ -6,9 +6,9 @@ public class MechaControl : MonoBehaviour
 
 	public Rigidbody rig = new Rigidbody();
 	private Vector3 pos;
-	private Quaternion rotn;
 	public float speed;
 	public float rotation;
+	public float angle;
 
 	void Start () 
 	{}
@@ -16,11 +16,10 @@ public class MechaControl : MonoBehaviour
 	void Update () 
 	{
 		pos = rig.transform.position;
-		rotn = rig.transform.rotation;
 		Move ();
 		Rotation ();
 		rig.transform.position = pos;
-		rig.transform.rotation = rotn;
+
 	}
 
 	void Move ()
@@ -31,6 +30,7 @@ public class MechaControl : MonoBehaviour
 
 	void Rotation()
 	{
-		rotn.y += rotation * Input.GetAxis ("Rotation");
+		angle += rotation * Input.GetAxis("Rotation");
+		transform.rotation = Quaternion.Euler(0, angle, 0);
 	}
 }
