@@ -9,28 +9,34 @@ public class MechaControl : MonoBehaviour
 	public float speed;
 	public float rotation;
 	public float angle;
+	public float radAngle;
 
 	void Start () 
 	{}
 
 	void Update () 
 	{
-		pos = rig.transform.position;
 		Move ();
 		Rotation ();
-		rig.transform.position = pos;
-
 	}
 
 	void Move ()
 	{
-		pos.x += speed * Input.GetAxis ("Horizontal");
-		pos.z += speed * Input.GetAxis ("Horizontal2");
+		pos = rig.transform.position;
+		float rad = ToRad(angle);
+		pos.z += speed * (Input.GetAxis ("Horizontal2") * Mathf.Cos (rad) + Input.GetAxis ("Horizontal") * Mathf.Cos ((Mathf.PI / 2) + rad ));
+		pos.x += speed * (Input.GetAxis ("Horizontal2") * Mathf.Cos ((Mathf.PI / 2) - rad) + Input.GetAxis("Horizontal") * Mathf.Cos (rad));
+		rig.transform.position = pos;
 	}
 
 	void Rotation()
 	{
 		angle += rotation * Input.GetAxis("Rotation");
-		transform.rotation = Quaternion.Euler(0, angle, 0);
+		rig.transform.rotation = Quaternion.Euler(0, angle, 0);
+	}
+
+	float ToRad(float angle)
+	{
+		return ((Mathf.PI) / 180) * angle;
 	}
 }
