@@ -11,16 +11,16 @@ public class EnnemieManager : MonoBehaviour {
     public Rigidbody Player;
 
 	// Use this for initialization
-	void Start ()
-	{
-		ListEnemy.Add(test);
+	void Start () {
+        ListEnemy.Add(test);
 	}
 	
 	// Update is called once per frame
-	void Update () 
-	{
-		foreach(Enemy i in ListEnemy){
-		    i.Target = Player.transform.position;
-        	}
+	void FixedUpdate () {
+        foreach(Enemy i in ListEnemy)
+        {
+            i.Target = Player.transform.position;
+            i.TargetPlayer = true;
+        }
 	}
 }
