@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
+public abstract class Enemy : MonoBehaviour {
 
     public Rigidbody rig;
 
@@ -54,5 +54,8 @@ public class Enemy : MonoBehaviour {
             rig.velocity = Vector3.zero;
             agent.ResetPath();
         }
+        Fire();
     }
+
+    protected abstract void Fire();
 }
