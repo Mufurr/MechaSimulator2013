@@ -9,8 +9,11 @@ Tags:
 Inputs:
 - Horizontal : (q & d) to move left and right
 - Horizontal2 : (z & s) to move up and down // Pierre wanted that name. yeah, I know....
+- Rotation : (a & e) to rotate the mech left and right
 - Mouse x : (Mouse axis, x axis, not inverted) horizontal mouvements of the mouse
 - Mouse y : (Mouse axis, y axis, inverted) vertical mouvement of the mouse
+
+All inputs are in azerty, for qwerty keyboard, just remember that q <-> a and w <-> z
 
 Recommended sensitivity for the mouse is 30
 
