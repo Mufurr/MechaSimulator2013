@@ -34,12 +34,15 @@ public class Missile : MonoBehaviour {
     {
         if (Enemy && other.tag == "Player") {
             Destroy(Trans.gameObject);
+            Debug.Log("A missile hit the player!");
         }
         if (!Enemy && other.tag == "Enemy") {
             Destroy(Trans.gameObject);
+            Debug.Log("A missile hit an enemy!");
         }
         if (other.tag == "Obstacle") {
             Destroy(Trans.gameObject);
+            Debug.Log("A missile hit an obstacle!");
         }
     }
 

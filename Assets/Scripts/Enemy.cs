@@ -5,18 +5,20 @@ public abstract class Enemy : MonoBehaviour {
 
     public Rigidbody rig;
 
-    public Vector3 Target { private get; set; }
+    public Vector3 Target { protected get; set; }
     public float distance;
     public bool TargetPlayer;
 
     public float speed;
-    public float safeDistance; 
+    public float safeDistance;
+
+    public static int level { protected set; get; }
 
     public NavMeshAgent agent;
-    
-	// Use this for initialization
-	void Start () {
-        agent = GetComponent<NavMeshAgent>();
+
+    // Use this for initialization
+    public virtual void Start () {
+        //agent = GetComponent<NavMeshAgent>();
         Target = rig.transform.position;
     }
 	
