@@ -4,6 +4,7 @@ Tags:
 - Player: The mech should be tagged "Player"
 - Map: The map and any obstacle should be tagged "Map"
 - Enemy : All enemies should be tagged "Enemy"
+- Button :  All pressable buttons should be tagged "Button"
 
 Inputs:
 - Horizontal : (q & d) to move left and right
