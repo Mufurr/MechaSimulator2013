@@ -1,5 +1,10 @@
 # MechaSimulator2013
 
+Tags:
+- Player: The mech should be tagged "Player"
+- Map: The map and any obstacle should be tagged "Map"
+- Enemy : All enemies should be tagged "Enemy"
+
 Inputs:
 - Horizontal : (q & d) to move left and right
 - Horizontal2 : (z & s) to move up and down // Pierre wanted that name. yeah, I know....
