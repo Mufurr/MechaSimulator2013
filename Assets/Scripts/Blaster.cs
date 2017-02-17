@@ -8,13 +8,18 @@ public class Blaster : Enemy {
 
     public GameObject Missile;
 
+    public override void Start()
+    {
+        level = 1;
+    }
+
     protected override void Fire()
     {
         RaycastHit Hit;
         if (reload == 0)
         {
             if (Physics.Raycast(rig.position, rig.transform.TransformDirection(Vector3.forward), out Hit)
-                && Hit.collider.name == "Mech")
+                && Hit.collider.tag == "Player")
             {
                 Instantiate(Missile, rig.position, rig.rotation);
                 reload = reloadRate;
