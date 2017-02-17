@@ -7,7 +7,6 @@ public class MoveCamera : MonoBehaviour
 	public Camera cam;
 	private float angle_x;
 	private float angle_y;
-	private Vector2 center = new Vector2 ((Screen.width / 2), (Screen.height / 2));
 
 	void Start () 
 	{}
