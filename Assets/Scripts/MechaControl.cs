@@ -1,50 +1,49 @@
 using UnityEngine;
 using System.Collections;
 
-public enum MechFunction { Shoot, None}
+public class MechaControl : MonoBehaviour 
+{
 
-public class ButtonManager : MonoBehaviour {
+	public Rigidbody rig = new Rigidbody();
+	private Vector3 pos;
+	public Missile missile;
+	public float speed;
+	public float rotation;
+	private float angle;
+	private int reloadMissile = 0;
 
-    private Button[] buttonList;
-    public new Camera camera;
+	void Start () 
+	{}
 
-    public MechaControl Mech;
-
-	// Use this for initialization
-	void Start () {
-        buttonList = GameObject.FindObjectsOfType<Button>();
-        if(buttonList.Length > 0)
-        {
-            buttonList[0].function = MechFunction.Shoot;
-        }
+	void Update () 
+	{
+		Move ();
+		Rotation ();
+		reloadMissile--;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit Hit;
-            MechFunction clickedFunction = MechFunction.None;
-            if (Physics.Raycast(camera.transform.position, camera.transform.TransformDirection(Vector3.forward), out Hit))
-            {
-                foreach (Button i in buttonList)
-                {
-                    if (Hit.collider.gameObject.transform.position == i.transform.position)
-                    {
-                        clickedFunction = i.function;
-                        break;
-                    }
-                }
-                switch (clickedFunction)
-                {
-                    case MechFunction.None:
-                        return;
-                    case MechFunction.Shoot:
-                        //Mech.Shoot();
-                        break;
-                }
-            }
-        }
-    }
+
+	void Move ()
+	{
+		pos = rig.transform.position;
+		float rad = ((Mathf.PI) / 180) * angle;
+		float cos = Mathf.Cos(rad);
+		pos.z += speed * (Input.GetAxis ("Horizontal2") * cos + Input.GetAxis ("Horizontal") * Mathf.Cos ((Mathf.PI / 2) + rad ));
+		pos.x += speed * (Input.GetAxis ("Horizontal2") * Mathf.Cos ((Mathf.PI / 2) - rad) + Input.GetAxis("Horizontal") * cos);
+		rig.transform.position = pos;
+	}
+
+	void Rotation()
+	{
+		angle += rotation * Input.GetAxis("Rotation");
+		rig.transform.rotation = Quaternion.Euler(0, angle, 0);
+	}
+
+	public void Shoot()
+	{
+		if (reloadMissile <= 0)
+		{
+			Instantiate (missile, rig.position, rig.rotation);
+			reloadMissile = 50;
+		}
+	}
 }
