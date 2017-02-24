@@ -5,14 +5,11 @@ public class MechaControl : MonoBehaviour
 {
 
 	public Rigidbody rig = new Rigidbody();
-	public int health;
-	public int tankers;
+	private int health;
 	private bool current_tanker;
 	private int tanker1;
 	private int tanker2;
 	private Vector3 pos;
-	public float movement_speed;
-	public float rotation_speed;
 	private float angle;
 	public Missile missile;
 	public int reload;
@@ -20,16 +17,17 @@ public class MechaControl : MonoBehaviour
 
 	void Start () 
 	{
-		tanker1 = tankers;
-		tanker2 = tankers;
+		health = 100;
+		tanker1 = 100;
+		tanker2 = 100;
 	}
 
 	void Update () 
 	{
 		Is_Dead ();
 		TankersManager ();
-		Move ();
 		Rotation ();
+		Move ();
 		reloadMissile--;
 	}
 
@@ -40,8 +38,8 @@ public class MechaControl : MonoBehaviour
 			pos = rig.transform.position;
 			float rad = ((Mathf.PI) / 180) * angle;
 			float cos = Mathf.Cos(rad);
-			pos.z += movement_speed * (Input.GetAxis ("Horizontal2") * cos + Input.GetAxis ("Horizontal") * Mathf.Cos ((Mathf.PI / 2) + rad ));
-			pos.x += movement_speed * (Input.GetAxis ("Horizontal2") * Mathf.Cos ((Mathf.PI / 2) - rad) + Input.GetAxis("Horizontal") * cos);
+			pos.z += 0.1F * (Input.GetAxis ("Horizontal2") * cos + Input.GetAxis ("Horizontal") * Mathf.Cos ((Mathf.PI / 2) + rad ));
+			pos.x += 0.1F * (Input.GetAxis ("Horizontal2") * Mathf.Cos ((Mathf.PI / 2) - rad) + Input.GetAxis("Horizontal") * cos);
 			rig.transform.position = pos;
 			if (Input.GetAxis ("Horizontal2") != 0 || Input.GetAxis("Horizontal") != 0)
 			{
@@ -55,7 +53,7 @@ public class MechaControl : MonoBehaviour
 
 	void Rotation()
 	{
-		angle += rotation_speed * Input.GetAxis("Rotation");
+		angle += Input.GetAxis("Rotation");
 		rig.transform.rotation = Quaternion.Euler(0, angle, 0);
 	}
 
@@ -77,14 +75,14 @@ public class MechaControl : MonoBehaviour
 	{
 		if (current_tanker)
 		{
-			if (tanker2 < tankers)
+			if (tanker2 < 100)
 				tanker2++;
 			if (tanker1 <= 0)
 				current_tanker = false;
 			}
 		else
 		{
-			if (tanker1 < tankers)
+			if (tanker1 < 100)
 				tanker1++;
 			if (tanker2 <= 0)
 				current_tanker = true;
