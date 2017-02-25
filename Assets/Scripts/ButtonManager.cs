@@ -19,7 +19,9 @@ public class ButtonManager : MonoBehaviour {
             if(ListFunctions.Count > 0)
             {
                 System.Random rand = new System.Random();
-                i.function = ListFunctions[rand.Next(ListFunctions.Count)];
+                int index = rand.Next(ListFunctions.Count);
+                i.function = ListFunctions[index];
+                ListFunctions.Remove(ListFunctions[index]);
             } else
             {
                 i.function = MechFunction.None;

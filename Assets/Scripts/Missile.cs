@@ -4,9 +4,9 @@ using System.Collections;
 public class Missile : MonoBehaviour {
 
     public Transform Trans;
+    public Explosion expl;
 
     public float speed;
-    public float delta;
     public int LifeTime;
     public bool Enemy;
 
@@ -33,16 +33,18 @@ public class Missile : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (Enemy && other.tag == "Player") {
+            Instantiate(expl, Trans.position, transform.rotation);
             Destroy(Trans.gameObject);
-            Debug.Log("A missile hit the player!");
         }
-        if (!Enemy && other.tag == "Enemy") {
+        if (!Enemy && other.tag == "Enemy")
+        {
+            Instantiate(expl, Trans.position, transform.rotation);
             Destroy(Trans.gameObject);
-            Debug.Log("A missile hit an enemy!");
         }
-        if (other.tag == "Obstacle") {
+        if (other.tag == "Map")
+        {
+            Instantiate(expl, Trans.position, transform.rotation);
             Destroy(Trans.gameObject);
-            Debug.Log("A missile hit an obstacle!");
         }
     }
 
