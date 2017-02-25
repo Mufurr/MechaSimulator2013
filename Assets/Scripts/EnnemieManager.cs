@@ -32,13 +32,15 @@ public class EnnemieManager : MonoBehaviour {
 	
 	void FixedUpdate () {
         System.Random rand = new System.Random();
-        foreach(Enemy i in ListEnemy)
+        for(int i = ListEnemy.Count -1; i >= 0; i--)
         {
-            i.Target = Player.transform.position;
-            i.TargetPlayer = true;
+            ListEnemy[i].Target = Player.transform.position;
+            ListEnemy[i].TargetPlayer = true;
+            if (!ListEnemy[i].alive) {
+                ListEnemy.Remove(ListEnemy[i]);
+            }
         }
         int LackScore = Level - GetScore();
-        Debug.Log(LackScore);
         switch (rand.Next(2)) {
             case 0:
                 if(LackScore >= Blaster.level) {

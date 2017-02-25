@@ -5,6 +5,8 @@ using System;
 public class Bomber : Enemy {
 
     public bool MechInRange = false;
+
+    public Explosion expl;
     
     public override void Start()
     {
@@ -13,18 +15,20 @@ public class Bomber : Enemy {
 
     protected override void Fire()
     {
-        if (MechInRange) {
+        if (MechInRange)
+        {
+            Instantiate(expl, rig.position, rig.rotation);
             Destroy(rig.gameObject);
-            Debug.Log("A bomber exploded !");
+            alive = false;
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    new void OnTriggerEnter(Collider other)
     {
+        base.OnTriggerEnter(other);
         if (other.tag == "Player")
         {
             MechInRange = true;
-            Debug.Log("A Mech is in range !");
         }
     }
 }

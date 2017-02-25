@@ -14,12 +14,16 @@ public abstract class Enemy : MonoBehaviour {
 
     public static int level { protected set; get; }
 
+    private int Life = 20;
+    public bool alive = true; 
+
     public NavMeshAgent agent;
 
     // Use this for initialization
     public virtual void Start () {
         //agent = GetComponent<NavMeshAgent>();
         Target = rig.transform.position;
+        alive = true;
     }
 	
 	// Update is called once per frame
@@ -32,6 +36,11 @@ public abstract class Enemy : MonoBehaviour {
         else
         {
             agent.SetDestination(Target);
+        }
+        if(Life <= 0)
+        {
+            alive = false;
+            Destroy(this.gameObject);
         }
     }
 
@@ -57,6 +66,13 @@ public abstract class Enemy : MonoBehaviour {
             agent.ResetPath();
         }
         Fire();
+    }
+
+    protected void OnTriggerEnter(Collider other) {
+        if(other.tag == "Explosion")
+        {
+            Life -= 10;
+        }
     }
 
     protected abstract void Fire();
