@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public enum MechFunction { Shoot, None}
+public enum MechFunction { Shoot, SwitchTanker, None}
 
 public class ButtonManager : MonoBehaviour {
 
@@ -13,9 +13,17 @@ public class ButtonManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         buttonList = GameObject.FindObjectsOfType<Button>();
-        if(buttonList.Length > 0)
+        List<MechFunction> ListFunctions = new List<MechFunction> { MechFunction.Shoot, MechFunction.SwitchTanker };
+        foreach(Button i in buttonList)
         {
-            buttonList[0].function = MechFunction.Shoot;
+            if(ListFunctions.Count > 0)
+            {
+                System.Random rand = new System.Random();
+                i.function = ListFunctions[rand.Next(ListFunctions.Count)];
+            } else
+            {
+                i.function = MechFunction.None;
+            }
         }
 	}
 	
@@ -41,8 +49,11 @@ public class ButtonManager : MonoBehaviour {
                     case MechFunction.None:
                         return;
                     case MechFunction.Shoot:
-                        //Mech.Shoot();
-                        break;
+                        Mech.Shoot();
+                        return;
+                    case MechFunction.SwitchTanker:
+                        Mech.Switch_Tanker();
+                        return;
                 }
             }
         }
