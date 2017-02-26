@@ -34,7 +34,7 @@ public class ButtonManager : MonoBehaviour {
 		{
 			RaycastHit Hit;
 			MechFunction clickedFunction = MechFunction.None;
-			if (Physics.Raycast(camera.transform.position, camera.transform.TransformDirection(Vector3.forward), out Hit))
+			if (Physics.Raycast(camera.transform.position, camera.transform.TransformDirection(0, -0.34F, 1), out Hit))
 			{
 				foreach (Button i in buttonList)
 				{
