@@ -5,10 +5,10 @@ public class MechaControl : MonoBehaviour
 {
 
 	public Rigidbody rig = new Rigidbody();
-	private int health;
-	private bool currentTanker;
-	private int tanker1;
-	private int tanker2;
+	public int health { set; get; }
+	public bool currentTanker { set; get; }
+	public int tanker1 { set; get; }
+	public int tanker2 { set; get; }
 	private Vector3 pos;
 	private float angle;
 	public Missile missile;
