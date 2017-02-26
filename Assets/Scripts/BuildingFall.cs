@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Fallout : MonoBehaviour
+public class BuildingFall : MonoBehaviour
 {
 
 	public Rigidbody rig = new Rigidbody();
@@ -34,9 +34,9 @@ public class Fallout : MonoBehaviour
 	void Fall ()
 	{
 		pos = rig.transform.position;
-		if (pos.y != -25)
+		if (pos.y >= -10F)
 		{
-			pos.y -= 0.10F;
+			pos.y -= 0.05F;
 		}
 		rig.transform.position = pos;
 	}
