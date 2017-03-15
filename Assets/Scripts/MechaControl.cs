@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections;
 
-public class MechaControl : MonoBehaviour 
+public class Mecha : MonoBehaviour 
 {
 
-	public Rigidbody rig = new Rigidbody();
-	public int health { set; get; }
-	public bool currentTanker { set; get; }
-	public int tanker1 { set; get; }
-	public int tanker2 { set; get; }
+	private Rigidbody rig;
+	public int health { get; private set; }
+	public bool currentTanker { get; private set; }
+	public int tanker1  { get; private set; }
+	public int tanker2 { get; private set; }
 	private Vector3 pos;
 	private float angle;
+	public Shoulder shoulder;
 	public Missile missile;
-	private int ammo;
+	public int ammo { get; private set; }
 	private int reload;
 	private int reloadMissile = 0;
 	public Collider Flames;
@@ -20,11 +21,12 @@ public class MechaControl : MonoBehaviour
 
 	void Start () 
 	{
-		health = 1000;
-		ammo = 25;
+		rig = GetComponent<Rigidbody> ();
+		health = 500;
+		ammo = 35;
 		tanker1 = 1000;
 		tanker2 = 1000;
-		reload = 50;
+		reload = 35;
 		flamethrower = false;
 
 	}
@@ -33,11 +35,16 @@ public class MechaControl : MonoBehaviour
 	{
 		IsDead ();
 		TankersManager ();
-		Rotation ();
-		Move ();
+		if (Input.GetAxisRaw ("Switch joystick") > 0)
+		{
+			shoulder.Move ();
+		}
+		else
+		{
+			Move ();
+		}
 		FlameThrower ();
 		reloadMissile--;
-		Debug.Log ("Health: " + health + "hp; Tanker 1: " + tanker1 + "; Tanker 2: " + tanker2 + "; Ammo: " + ammo);
 	}
 
 	void Move ()
@@ -47,30 +54,26 @@ public class MechaControl : MonoBehaviour
 			pos = rig.transform.position;
 			float rad = ((Mathf.PI) / 180) * angle;
 			float cos = Mathf.Cos(rad);
-			pos.z += 0.1F * (Input.GetAxis ("Horizontal") * cos);
-			pos.x += 0.1F * (Input.GetAxis ("Horizontal") * Mathf.Cos ((Mathf.PI / 2) - rad));
+			pos.z += 0.15F * (Input.GetAxis ("Vertical") * cos);
+			pos.x += 0.15F * (Input.GetAxis ("Vertical") * Mathf.Cos ((Mathf.PI / 2) - rad));
 			rig.transform.position = pos;
-			if (Input.GetAxis ("Horizontal") != 0)
+			if (Input.GetAxis ("Vertical") != 0)
 			{
 				if (currentTanker)
 					tanker1--;
 				else
 					tanker2--;
 			}
+			angle += 1.5F * Input.GetAxis("Horizontal");
+			rig.transform.rotation = Quaternion.Euler(0, angle, 0);
 		}
-	}
-
-	void Rotation()
-	{
-		angle += Input.GetAxis("Rotation");
-		rig.transform.rotation = Quaternion.Euler(0, angle, 0);
 	}
 
 	public void Shoot()
 	{
 		if (ammo > 0 && reloadMissile <= 0)
 		{
-			Instantiate (missile, rig.position, rig.rotation);
+			Instantiate (missile, new Vector3 (pos.x, pos.y + 0.25F, pos.z), rig.rotation);
 			ammo--;
 			reloadMissile = reload;
 		}
@@ -88,19 +91,19 @@ public class MechaControl : MonoBehaviour
 		{
 			if (TankerIsNotEmpty ()) 
 			{
-				FlamesPos.y = 1;
+				FlamesPos.y = rig.position.y;
 				Flames.transform.position = FlamesPos;
 				if (currentTanker)
-					tanker1--;
+					tanker1 -= 2;
 				else
-					tanker2--;
+					tanker2 -= 2;
 			} 
 			else
 				flamethrower = false;
 		}
 		else
 		{
-			FlamesPos.y = -1000;
+			FlamesPos.y = -50;
 			Flames.transform.position = FlamesPos;
 		}
 	}
@@ -122,9 +125,10 @@ public class MechaControl : MonoBehaviour
 	{
 		if (other.tag == "Heal")
 		{
-			health += 150;
-			if (health >= 1000)
-				health = 1000;
+			//ReloadingPoint here = other.GetComponent<>;
+			health += 100;
+			if (health >= 500)
+				health = 500;
 			ammo += 15;
 			if (ammo >= 25)
 				ammo = 25;
