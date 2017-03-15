@@ -4,8 +4,8 @@ using System.Collections;
 public class Shoulder : MonoBehaviour {
 
 	private Transform Trans;
-	public float angley { get; private set; }
-	public float anglez { get; private set; }
+	private float angley;
+	private float anglez;
 
 	void Start () 
 	{
