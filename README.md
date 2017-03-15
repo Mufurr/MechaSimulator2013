@@ -10,10 +10,11 @@ Tags:
 - Heal : Reloading points shall be tagged "Heal". Because they actually heal.
 
 Inputs:
-- Horizontal : (z & s) to move up and down 
-- Rotation : (q & d) to rotate the mech left and right
-- Mouse x : (Mouse axis, x axis, not inverted) horizontal movements of the mouse
-- Mouse y : (Mouse axis, y axis, inverted) vertical movements of the mouse
+- Vertical (z & s) : to move up and down 
+- Horizontal (q & d) : to rotate the mech left and right
+- Mouse x (Mouse axis, x axis, not inverted) : horizontal movements of the mouse
+- Mouse y (Mouse axis, y axis, inverted) : vertical movements of the mouse
+- Switch joystick (left shift) : will have a lot of uses in the future
 
 All inputs are in azerty; for qwerty keyboards, just remember that q <-> a and w <-> z
 
