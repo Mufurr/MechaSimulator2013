@@ -1,0 +1,32 @@
+using UnityEngine;
+using System.Collections;
+
+public class Shoulder : MonoBehaviour {
+
+	private Transform Trans;
+	public float angley { get; private set; }
+	public float anglez { get; private set; }
+
+	void Start () 
+	{
+		Trans = GetComponent<Transform> ();
+		angley = 0;
+		anglez = 0;
+	}
+		
+	public void Move ()
+	{
+		angley += Input.GetAxis ("Horizontal");
+		if (angley < -90)
+			angley = -90;
+		if (angley > 0)
+			angley = 0;
+		anglez += Input.GetAxis ("Vertical");
+		if (anglez < -90)
+			anglez = -90;
+		if (anglez > 0)
+			anglez = 0;
+		Trans.localRotation = Quaternion.Euler (0, angley, anglez);
+		
+	}
+}
