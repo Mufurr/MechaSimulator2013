@@ -11,7 +11,7 @@ public class Mecha : MonoBehaviour
 	public int tanker2 { get; private set; }
 	private Vector3 pos;
 	private float angle;
-	public Shoulder shoulder;
+	public Arm arm;
 	public Missile missile;
 	public int ammo { get; private set; }
 	private int reload;
@@ -37,7 +37,7 @@ public class Mecha : MonoBehaviour
 		TankersManager ();
 		if (Input.GetAxisRaw ("Switch joystick") > 0)
 		{
-			shoulder.Move ();
+			arm.Move ();
 		}
 		else
 		{
@@ -86,13 +86,12 @@ public class Mecha : MonoBehaviour
 
 	public void FlameThrower ()
 	{
-		Vector3 FlamesPos = Flames.transform.position;
+		Flames.transform.localRotation = Quaternion.Euler(-90, 0, -90);
 		if (flamethrower) 
 		{
 			if (TankerIsNotEmpty ()) 
 			{
-				FlamesPos.y = rig.position.y;
-				Flames.transform.position = FlamesPos;
+				Flames.transform.localPosition = new Vector3(0, -7, 0);
 				if (currentTanker)
 					tanker1 -= 2;
 				else
@@ -103,8 +102,7 @@ public class Mecha : MonoBehaviour
 		}
 		else
 		{
-			FlamesPos.y = -50;
-			Flames.transform.position = FlamesPos;
+			Flames.transform.localPosition = new Vector3(-50, -7.5F, 0);
 		}
 	}
 
