@@ -4,29 +4,30 @@ using System.Collections;
 public class Shoulder : MonoBehaviour {
 
 	private Transform Trans;
-	private float angley;
+	public float angley { get; private set;}
 	private float anglez;
 
 	void Start () 
 	{
 		Trans = GetComponent<Transform> ();
-		angley = 0;
+		angley = Trans.localRotation.eulerAngles.y;
+		if (angley == 315)
+			angley = -45;
 		anglez = 0;
 	}
 		
-	public void Move ()
+	public void Move (float min, float max)
 	{
-		angley += Input.GetAxis ("Horizontal");
-		if (angley < -90)
-			angley = -90;
-		if (angley > 0)
-			angley = 0;
-		anglez += Input.GetAxis ("Vertical");
+		angley += 2 * Input.GetAxis ("Horizontal");
+		if (angley < min)
+			angley = min;
+		if (angley > max)
+			angley = max;
+		anglez += 2 * Input.GetAxis ("Vertical");
 		if (anglez < -90)
 			anglez = -90;
 		if (anglez > 0)
 			anglez = 0;
 		Trans.localRotation = Quaternion.Euler (0, angley, anglez);
-		
 	}
 }
