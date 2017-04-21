@@ -33,7 +33,7 @@ public class ziguiguidansleciel : MonoBehaviour {
     void Fall()
     {
         pos = rig.transform.position;
-        if (pos.y >= 1000)
+        if (pos.y <= 1000)
         {
             pos.y += 0.2F;
         }
