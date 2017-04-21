@@ -1,0 +1,212 @@
+using UnityEngine;
+using System.Collections;
+
+public class AlterMecha : MonoBehaviour {
+
+	public ReloadingPointManager Master;
+	private Rigidbody rig;
+	public int health { get; private set; }
+	public bool currentTanker { get; private set; }
+	public int tanker1 { get; private set; }
+	public int tanker2 { get; private set; }
+	private float angle;
+	private Vector3 pos;
+	public Arm LeftArm;
+	public Arm RightArm;
+	public Missile missile;
+	public int ammo { get; private set; }
+	private int reloadMissile;
+	public Collider Flames;
+	private bool flamethrower;
+	public Shield shield;
+	public MachineGun Machinegun;
+	private int machineGunAmmo;
+	private bool machinegun;
+	public EnergySword Sword;
+	private bool sword;
+
+	void Start () 
+	{
+		rig = GetComponent<Rigidbody>();
+		pos = rig.position;
+		health = 5000;
+		ammo = 35;
+		machineGunAmmo = 500;
+		tanker1 = 1000;
+		tanker2 = 1000;
+		machinegun = false;
+		flamethrower = false;
+		sword = false;
+	}
+
+	bool TankerFullEnough (int n)
+	{
+		return (currentTanker && (tanker1 >= n)) || ((!currentTanker) && (tanker2 >= n));
+	}
+
+	void FuelCost (int n)
+	{
+		if (currentTanker)
+			tanker1 -= n;
+		else
+			tanker2 -= n;
+	}
+
+	void Move ()
+	{
+		if (TankerFullEnough(1))
+		{
+			if (Input.GetAxis ("Vertical") != 0)
+			{
+				FuelCost (1);
+			} 
+			pos = rig.position; 
+			float rad = ((Mathf.PI) / 180) * angle;
+			float cos = Mathf.Cos (rad);
+			pos.z += 0.15F * (Input.GetAxis ("Vertical") * cos);
+			pos.x += 0.15F * (Input.GetAxis ("Vertical") * Mathf.Cos ((Mathf.PI / 2) - rad));
+			rig.transform.position = pos;
+		}
+		angle += 2 * Input.GetAxis ("Horizontal");
+		rig.transform.rotation = Quaternion.Euler (0, angle, 0);
+	}
+
+	public void Shoot ()
+	{
+		if (ammo > 0 && reloadMissile <= 0)
+		{
+			Instantiate (missile, new Vector3 (pos.x, pos.y + 0.25F, pos.z), rig.rotation);
+			ammo--;
+			reloadMissile = 50;
+		}
+	}
+
+	void TankersManager ()
+	{
+		if (currentTanker && tanker2 < 1000)
+			tanker2++;
+		else if (!currentTanker && tanker1 < 1000)
+			tanker1++;
+	}
+
+	public void SwitchTanker()
+	{
+		currentTanker = !currentTanker;
+	}
+
+	public void SwitchMachineGun ()
+	{
+		machinegun = !machinegun;
+	}
+
+	void ShootMachineGun ()
+	{
+		if (machinegun) 
+		{
+			if (machineGunAmmo > 0)
+			{
+				Machinegun.Shoot ();
+				machineGunAmmo--;
+			}
+			else
+				machinegun = false;
+		}
+	}
+
+	public void SwitchFlameThrower ()
+	{
+		flamethrower = !flamethrower;
+		if (flamethrower)
+			Flames.transform.localPosition = new Vector3(0, -30F, 0);
+		else
+			Flames.transform.localPosition = new Vector3(-50, -30F, 0);
+	}
+
+	void FlameThrower ()
+	{
+		if (flamethrower) 
+		{ 
+			if (TankerFullEnough(5)) 
+				FuelCost (5);
+			else
+				SwitchFlameThrower();
+		}
+	}
+
+	public void SwitchSword ()
+	{
+		Sword.Switch ();
+		sword = !sword;
+	}
+
+	void SwordManager ()
+	{
+		if (sword)
+		{
+			if (TankerFullEnough (2))
+				FuelCost (2);
+			else
+				SwitchSword ();
+		}
+	}
+
+	void Shielding()
+	{
+		if (shield.health >= 0)
+			shield.transform.localPosition = new Vector3 (0, 0, -0.6F);
+		else
+			shield.transform.localPosition = new Vector3 (-50, 0, -0.6F);
+	}
+
+	public void ReloadShield()
+	{
+		if (TankerFullEnough (100)) 
+		{
+			FuelCost (100);
+		}
+		shield.Reload ();
+	}
+
+	void IsDead()
+	{
+		if (health <= 0)
+			Destroy (rig.gameObject);
+	}
+
+	void OnTriggerEnter (Collider other)
+	{
+		if (other.tag == "Heal") 
+		{
+			health += Master.Heal;
+			if (health >= 500)
+				health = 500;
+			ammo += Master.MissileAmmoReload;
+			if (ammo >= 35)
+				ammo = 35;
+			machineGunAmmo += Master.MachineGunAmmoReload;
+			if (machineGunAmmo >= 500)
+				machineGunAmmo = 500;
+		}
+		if (other.tag == "Explosion") 
+		{
+			health -= 10;
+			IsDead ();
+		}
+	}
+
+	void Update () 
+	{
+		TankersManager ();
+		if (Input.GetAxisRaw ("Switch joystick") > 0)
+		{
+			RightArm.Move ();
+			LeftArm.Move ();
+		}
+		else
+			Move();
+		FlameThrower ();
+		ShootMachineGun ();
+		SwordManager ();
+		reloadMissile--;
+	}
+}
