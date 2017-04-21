@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum MechFunction { Shoot, SwitchTanker, SwitchFlameThrower, None}
+public enum MechFunction { MissileShoot, SwitchTanker, SwitchFlameThrower, ReloadShield, SwitchMachineGun, SwitchSword, None}
 
 public class ButtonManager : MonoBehaviour {
 
 	private Button[] buttonList;
 	public new Camera camera;
 
-	public MechaControl Mech;
+	public Mecha Mech;
 
-	void Start () {
+	void Start () 
+	{
 		buttonList = GameObject.FindObjectsOfType<Button>();
-		List<MechFunction> ListFunctions = new List<MechFunction> { MechFunction.Shoot, MechFunction.SwitchTanker, MechFunction.SwitchFlameThrower };
+		List<MechFunction> ListFunctions = new List<MechFunction> { MechFunction.MissileShoot, MechFunction.SwitchTanker, MechFunction.SwitchFlameThrower, MechFunction.ReloadShield, MechFunction.SwitchMachineGun, MechFunction.SwitchSword };
 		foreach(Button i in buttonList)
 		{
 			if (ListFunctions.Count > 0)
@@ -48,14 +49,23 @@ public class ButtonManager : MonoBehaviour {
 				{
 				case MechFunction.None:
 					return;
-				case MechFunction.Shoot:
-					Mech.Shoot();
+				case MechFunction.MissileShoot:
+					Mech.MissileShoot();
 					return;
 				case MechFunction.SwitchTanker:
 					Mech.SwitchTanker ();
 					return;
 				case MechFunction.SwitchFlameThrower:
 					Mech.SwitchFlameThrower ();
+					return;
+				case MechFunction.ReloadShield:
+					Mech.ReloadShield ();
+					return;
+				case MechFunction.SwitchMachineGun:
+					Debug.Log ("Not yet, amigo");
+					return;
+				case MechFunction.SwitchSword:
+					Debug.Log ("Not yet, amigo");
 					return;
 				}
 			}
