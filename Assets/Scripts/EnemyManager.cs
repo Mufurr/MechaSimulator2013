@@ -5,7 +5,7 @@ using System;
 
 enum EnemyType { Blaster, Bomber};
 
-public class EnnemieManager : MonoBehaviour {
+public class EnemyManager : MonoBehaviour {
 
     private List<Enemy> ListEnemy = new List<Enemy> { };
     private List<Spawner> ListSpawner = new List<Spawner> { };
