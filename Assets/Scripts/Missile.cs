@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Missile : MonoBehaviour {
 
-	public Transform Trans;
+	private Transform Trans;
 	public Explosion expl;
 
 	private float speed;
@@ -12,6 +12,7 @@ public class Missile : MonoBehaviour {
 
 	void Start () 
 	{
+		Trans = GetComponent<Transform> ();
 		speed = 0.75F;
 		LifeTime = 1000;
 	}
@@ -26,13 +27,9 @@ public class Missile : MonoBehaviour {
 		pos.x += speed * (Mathf.Cos((Mathf.PI / 2) - rad) + Mathf.Cos(rad));
 		Trans.position = pos;
 		if (LifeTime == 0)
-		{
 			Destroy(Trans.gameObject);
-		}
 		else
-		{
 			LifeTime--;
-		}
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -42,6 +39,8 @@ public class Missile : MonoBehaviour {
 			Instantiate(expl, Trans.position, transform.rotation);
 			Destroy(Trans.gameObject);
 		}
+		if (Enemy && other.tag == "Shield")
+			Destroy(Trans.gameObject);
 	}
 
 	float ToRad(float angle)
